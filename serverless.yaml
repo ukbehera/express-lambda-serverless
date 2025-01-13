@@ -1,0 +1,46 @@
+service: serverless-postgres-crud-express
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: dev
+
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_USER: ${env:DB_USER}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_NAME: ${env:DB_NAME}
+
+functions:
+  createItem:
+    handler: handler.createItem
+    events:
+      - http:
+          path: /items
+          method: post
+
+  getItem:
+    handler: handler.getItem
+    events:
+      - http:
+          path: /items/{id}
+          method: get
+
+  updateItem:
+    handler: handler.updateItem
+    events:
+      - http:
+          path: /items/{id}
+          method: put
+
+  deleteItem:
+    handler: handler.deleteItem
+    events:
+      - http:
+          path: /items/{id}
+          method: delete
+
+plugins:
+  - serverless-offline
